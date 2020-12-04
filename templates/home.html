@@ -1,0 +1,19 @@
+{% extends 'template.html' %}
+
+{% block head %}
+{% endblock %}
+
+
+{% block content %}
+<div>
+  <form action="{{ url_for('get_result') }}" method="post">
+    <textarea id="inputText" name="text" style="width:100%; height:100px;
+" placeholder="Enter text to convert in either the Teeter or Newell-Hale alphabet."></textarea>
+    <br>
+    <button type="submit" name="direction" value="t2nh">Teeter to Newell-Hale</button>
+    <button type="submit" name="direction" value="nh2t">Newell-Hale
+      to Teeter</button>
+  </form>
+</div>
+
+{% endblock %}

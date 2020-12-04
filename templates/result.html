@@ -1,0 +1,72 @@
+{% extends 'template.html' %}
+
+{% block head %}
+
+<!--     CSS to style a div like a textarea from here: -->
+<!-- https://stackoverflow.com/questions/8956567/how-do-i-make-an-editable-div-look-like-a-text-field -->
+<style>
+.textarea {
+    -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    border: 1px solid gray;
+    font: medium -moz-fixed;
+    font: -webkit-small-control;
+    height: 100px;
+    overflow: auto;
+    padding: 2px;
+    resize: both;
+    width: 100%;
+}
+#warning{
+    display: none;
+}
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div>
+      <h3>Text converted to {{ conv_alphabet }} </h3>
+      <div id="convText" class="textarea">{% for p in conv_text %}{{p}}<br>
+        {% endfor %}</div>
+      <div id="warning">Warning: Some parts of the text could not be converted. These
+      parts are <mark>highlighted</mark>.</div>
+    </div>
+    <br>
+    <div>
+      <h3>Original text in {{ orig_alphabet }} </h3>
+      <div id="origText" class="textarea">{% for p in orig_text %}
+        {{p}}<br>
+        {% endfor %}</div>
+    </div>
+    <br>
+    <div>
+      <a href="/">
+      <button name="convertagain">Convert again</button>
+      </a>
+    </div>
+
+      <!-- <script src="vendor/mark.js/dist/mark.min.js"></script> -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"></script>
+      <script>
+        var instance = new Mark(document.getElementById('convText'));
+        var options = {
+            "element": "mark"
+        };
+
+        var ranges = JSON.parse('{{ ranges|tojson }}');
+        // instance.markRanges(ranges, options);
+        instance.mark( "{{ to_mark }}" , options);
+
+        // Make the warning visible if there are any characters that
+        // couldn't be converted.
+        if (ranges.length > 0) {
+            document.getElementById("warning").style.display = "block"; 
+        }
+
+      </script>
+
+{% endblock %}
+
